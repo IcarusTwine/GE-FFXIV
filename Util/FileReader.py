@@ -9,7 +9,7 @@ _ENDIAN_SYMBOLS = {
 	'network': '!'
 }
 
-class KeenReader:
+class Reader:
 	def __init__(self, stream, endianess: str = '<'): # little
 		self.base_stream = stream
 		self.set_endian(endianess)
@@ -45,11 +45,11 @@ class KeenReader:
 		
 	@staticmethod
 	def open(fn, mode = 'rb', endianess = '<'):
-		return KeenReader(open(fn, mode), endianess = endianess)
+		return Reader(open(fn, mode), endianess = endianess)
 	
 	@staticmethod
 	def load(data, endianess = '<'):
-		return KeenReader(io.BytesIO(data), endianess = endianess)
+		return Reader(io.BytesIO(data), endianess = endianess)
 	
 	def close(self):
 		if self.base_stream:
@@ -86,7 +86,7 @@ class KeenReader:
 				self.set_pos(_ + n - m)
 		return self
 			
-	def find(self, pattern, *, return_after = False): # TODO: improve speed by chunk reading
+	def find(self, pattern, *, return_after = False):
 		_p = self.get_pos()
 		_i, _s = 0, len(pattern)
 		
@@ -100,7 +100,7 @@ class KeenReader:
 					if not return_after:
 						self.set_pos(self.get_pos() - _i)
 					return True
-			elif _i != 0: # for overlaps
+			elif _i != 0:
 				self.set_pos(self.get_pos()  - _i)
 				_i = 0
 		
