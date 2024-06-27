@@ -9,7 +9,6 @@ def get_ffxiv_path():
     if config['init'] is None:
         config_parser = configparser.ConfigParser()
         config_parser.read('./config.ini')
-        print("Config sections:", config_parser.sections())  # Debug print to check sections
         if 'Paths' in config_parser and 'ffxiv_path' in config_parser['Paths']:
             ffxiv_path = config_parser['Paths']['ffxiv_path'].strip('"')  # Remove any surrounding quotes
             config['init'] = True
